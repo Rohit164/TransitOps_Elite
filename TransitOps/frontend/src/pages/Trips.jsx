@@ -101,9 +101,16 @@ export default function Trips() {
       setWizardError("Please select a driver for dispatch.");
       return;
     }
-    if (wizardStep === 4 && (!wizardFields.cargoWeight || !wizardFields.plannedDistance)) {
-      setWizardError("Please provide cargo load weight and trip distance.");
-      return;
+    if (wizardStep === 4) {
+      if (!wizardFields.cargoWeight || !wizardFields.plannedDistance) {
+        setWizardError("Please provide cargo load weight and trip distance.");
+        return;
+      }
+      const selVeh = vehicles.find(v => v.id === wizardFields.vehicleId);
+      if (selVeh && Number(wizardFields.cargoWeight) > selVeh.maxLoadCapacity) {
+        setWizardError(`Cargo capacity exceeded! Max capacity: ${selVeh.maxLoadCapacity.toLocaleString()} kg.`);
+        return;
+      }
     }
 
     setWizardError("");
@@ -456,6 +463,20 @@ export default function Trips() {
                       placeholder="e.g. 385"
                     />
                   </div>
+
+                  {/* Live Capacity Check Box matching Screen 4 of Mockup */}
+                  {(() => {
+                    const selV = vehicles.find(v => v.id === wizardFields.vehicleId);
+                    if (selV && Number(wizardFields.cargoWeight) > selV.maxLoadCapacity) {
+                      return (
+                        <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center gap-2.5 text-brand-danger text-xs font-semibold animate-pulse">
+                          <AlertTriangle size={15} className="shrink-0" />
+                          <span>Cargo capacity exceeded! Max capacity: {selV.maxLoadCapacity.toLocaleString()} kg, Cargo Weight: {Number(wizardFields.cargoWeight).toLocaleString()} kg</span>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
                 </div>
               )}
 

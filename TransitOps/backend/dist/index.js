@@ -35,7 +35,25 @@ app.get('/', (req, res) => {
         status: 'success',
         message: 'TransitOps ERP REST API is active and running',
         version: '1.0.0',
-        timestamp: new Date()
+        timestamp: new Date(),
+        frontendUrl: 'http://localhost:5173/'
+    });
+});
+app.get('/api', (req, res) => {
+    res.status(200).json({
+        status: 'success',
+        message: 'TransitOps REST API Directory',
+        frontend: 'http://localhost:5173/',
+        endpoints: {
+            auth: '/api/auth (POST /login, POST /signup)',
+            fleet: '/api/fleet (GET, POST)',
+            drivers: '/api/drivers (GET, POST)',
+            trips: '/api/trips (GET, POST, PATCH /dispatch, PATCH /complete)',
+            maintenance: '/api/maintenance (GET, POST, PATCH /status)',
+            expenses: '/api/expenses (GET, POST)',
+            analytics: '/api/analytics (GET)',
+            settings: '/api/settings (GET, PUT)'
+        }
     });
 });
 // Mount routers
