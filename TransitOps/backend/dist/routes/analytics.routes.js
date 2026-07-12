@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const analytics_controller_js_1 = require("../controllers/analytics.controller.js");
+const auth_middleware_js_1 = require("../middlewares/auth.middleware.js");
+const rbac_middleware_js_1 = require("../middlewares/rbac.middleware.js");
+const client_1 = require("@prisma/client");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_js_1.protect);
+router.get('/kpis', (0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DISPATCHER, client_1.Role.SAFETY_OFFICER, client_1.Role.FINANCIAL_ANALYST), analytics_controller_js_1.getDashboardKPIs);
+router.get('/reports', (0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DISPATCHER, client_1.Role.SAFETY_OFFICER, client_1.Role.FINANCIAL_ANALYST), analytics_controller_js_1.getReports);
+router.get('/export', (0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.FINANCIAL_ANALYST), analytics_controller_js_1.exportCSV);
+exports.default = router;
