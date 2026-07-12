@@ -61,47 +61,47 @@ export default function App() {
             {/* Dashboard: All roles */}
             <Route path="dashboard" element={<Dashboard />} />
 
-            {/* Fleet: Fleet Manager (CRUD), Dispatcher (View), Financial Analyst (View). Blocked for Safety Officer. */}
+            {/* Fleet: Fleet Manager (CRUD), Driver (View), Financial Analyst (View). Blocked for Safety Officer. */}
             <Route
               path="fleet"
               element={
-                <ProtectedRoute allowedRoles={["FLEET_MANAGER", "DISPATCHER", "FINANCIAL_ANALYST"]}>
+                <ProtectedRoute allowedRoles={["FLEET_MANAGER", "DRIVER", "FINANCIAL_ANALYST"]}>
                   <Fleet />
                 </ProtectedRoute>
               }
             />
 
-            {/* Drivers: Safety Officer (CRUD), Fleet Manager (View), Dispatcher (View). Blocked for Financial Analyst. */}
+            {/* Drivers: Safety Officer (CRUD), Fleet Manager (View), Driver (View). Blocked for Financial Analyst. */}
             <Route
               path="drivers"
               element={
-                <ProtectedRoute allowedRoles={["FLEET_MANAGER", "DISPATCHER", "SAFETY_OFFICER"]}>
+                <ProtectedRoute allowedRoles={["FLEET_MANAGER", "DRIVER", "SAFETY_OFFICER"]}>
                   <Drivers />
                 </ProtectedRoute>
               }
             />
 
-            {/* Trips: Dispatcher (CRUD), Fleet Manager (View), Safety Officer (View). Blocked for Financial Analyst. */}
+            {/* Trips: Driver (CRUD), Fleet Manager (View), Safety Officer (View). Blocked for Financial Analyst. */}
             <Route
               path="trips"
               element={
-                <ProtectedRoute allowedRoles={["FLEET_MANAGER", "DISPATCHER", "SAFETY_OFFICER"]}>
+                <ProtectedRoute allowedRoles={["FLEET_MANAGER", "DRIVER", "SAFETY_OFFICER"]}>
                   <Trips />
                 </ProtectedRoute>
               }
             />
 
-            {/* Maintenance: Fleet Manager (CRUD), Dispatcher (View), Financial Analyst (View). Blocked for Safety Officer. */}
+            {/* Maintenance: Fleet Manager (CRUD), Driver (View), Financial Analyst (View). Blocked for Safety Officer. */}
             <Route
               path="maintenance"
               element={
-                <ProtectedRoute allowedRoles={["FLEET_MANAGER", "DISPATCHER", "FINANCIAL_ANALYST"]}>
+                <ProtectedRoute allowedRoles={["FLEET_MANAGER", "DRIVER", "FINANCIAL_ANALYST"]}>
                   <Maintenance />
                 </ProtectedRoute>
               }
             />
 
-            {/* Fuel & Expense: Financial Analyst (CRUD), Fleet Manager (View). Blocked for Dispatcher, Safety Officer. */}
+            {/* Fuel & Expense: Financial Analyst (CRUD), Fleet Manager (View). Blocked for Driver, Safety Officer. */}
             <Route
               path="expenses"
               element={

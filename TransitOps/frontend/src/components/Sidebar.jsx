@@ -25,43 +25,43 @@ export default function Sidebar() {
       name: "Dashboard",
       path: "/dashboard",
       icon: LayoutDashboard,
-      roles: ["FLEET_MANAGER", "DISPATCHER", "SAFETY_OFFICER", "FINANCIAL_ANALYST"]
+      roles: ["FLEET_MANAGER", "DRIVER", "SAFETY_OFFICER", "FINANCIAL_ANALYST"]
     },
     {
       name: "Fleet Registry",
       path: "/fleet",
       icon: Truck,
-      roles: ["FLEET_MANAGER", "DISPATCHER", "FINANCIAL_ANALYST"] // Blocked for SAFETY_OFFICER
+      roles: ["FLEET_MANAGER", "DRIVER", "FINANCIAL_ANALYST"] // Blocked for SAFETY_OFFICER
     },
     {
       name: "Drivers Registry",
       path: "/drivers",
       icon: Users,
-      roles: ["FLEET_MANAGER", "DISPATCHER", "SAFETY_OFFICER"] // Blocked for FINANCIAL_ANALYST
+      roles: ["FLEET_MANAGER", "DRIVER", "SAFETY_OFFICER"] // Blocked for FINANCIAL_ANALYST
     },
     {
       name: "Trip Dispatcher",
       path: "/trips",
       icon: Compass,
-      roles: ["FLEET_MANAGER", "DISPATCHER", "SAFETY_OFFICER"] // Blocked for FINANCIAL_ANALYST
+      roles: ["FLEET_MANAGER", "DRIVER", "SAFETY_OFFICER"] // Blocked for FINANCIAL_ANALYST
     },
     {
       name: "Maintenance",
       path: "/maintenance",
       icon: Wrench,
-      roles: ["FLEET_MANAGER", "DISPATCHER", "FINANCIAL_ANALYST"] // Blocked for SAFETY_OFFICER
+      roles: ["FLEET_MANAGER", "DRIVER", "FINANCIAL_ANALYST"] // Blocked for SAFETY_OFFICER
     },
     {
       name: "Fuel & Expenses",
       path: "/expenses",
       icon: Receipt,
-      roles: ["FLEET_MANAGER", "FINANCIAL_ANALYST"] // Blocked for DISPATCHER, SAFETY_OFFICER
+      roles: ["FLEET_MANAGER", "FINANCIAL_ANALYST"] // Blocked for DRIVER, SAFETY_OFFICER
     },
     {
       name: "Analytics & Reports",
       path: "/analytics",
       icon: BarChart3,
-      roles: ["FLEET_MANAGER", "DISPATCHER", "SAFETY_OFFICER", "FINANCIAL_ANALYST"]
+      roles: ["FLEET_MANAGER", "DRIVER", "SAFETY_OFFICER", "FINANCIAL_ANALYST"]
     },
     {
       name: "Settings",

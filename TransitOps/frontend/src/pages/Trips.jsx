@@ -19,7 +19,7 @@ import {
 
 export default function Trips() {
   const { user } = useAuth();
-  const isDispatcher = user?.role === "DISPATCHER";
+  const isDriver = user?.role === "DRIVER";
 
   const [trips, setTrips] = useState([]);
   const [vehicles, setVehicles] = useState([]);
@@ -73,7 +73,7 @@ export default function Trips() {
   }, []);
 
   const handleOpenWizard = () => {
-    if (!isDispatcher) return;
+    if (!isDriver) return;
     setWizardStep(1);
     setWizardFields({
       source: "",
@@ -189,12 +189,12 @@ export default function Trips() {
         <div>
           <h1 className="text-3xl font-extrabold text-white tracking-tight m-0">Trip Dispatch Center</h1>
           <p className="text-slate-400 text-sm mt-1">
-            {isDispatcher
+            {isDriver
               ? "Plan, validate, and dispatch route shipments across the fleet."
               : "Read-only dispatcher logs and routes."}
           </p>
         </div>
-        {isDispatcher && (
+        {isDriver && (
           <button
             onClick={handleOpenWizard}
             className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary hover:bg-brand-primary-light text-white rounded-xl text-sm font-semibold transition-all cursor-pointer shadow-lg shadow-brand-primary/20"

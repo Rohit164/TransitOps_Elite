@@ -8,7 +8,7 @@ export default function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("DISPATCHER"); // Default role
+  const [role, setRole] = useState("DRIVER"); // Default role
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   
@@ -130,7 +130,7 @@ export default function Login() {
                   className="w-full form-input-custom px-4 py-3 rounded-lg text-slate-300 text-sm bg-dark-bg"
                 >
                   <option value="FLEET_MANAGER">Fleet Manager</option>
-                  <option value="DISPATCHER">Dispatcher</option>
+                  <option value="DRIVER">Driver</option>
                   <option value="SAFETY_OFFICER">Safety Officer</option>
                   <option value="FINANCIAL_ANALYST">Financial Analyst</option>
                 </select>
@@ -182,10 +182,10 @@ export default function Login() {
                   💼 Fleet Manager
                 </button>
                 <button
-                  onClick={() => fillCredentials("dispatcher@transitops.com")}
+                  onClick={() => fillCredentials("driver@transitops.com")}
                   className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
                 >
-                  📡 Dispatcher
+                  📡 Driver
                 </button>
                 <button
                   onClick={() => fillCredentials("safety_officer@transitops.com")}

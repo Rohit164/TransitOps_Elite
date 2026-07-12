@@ -16,7 +16,7 @@ async function main() {
   
   // Hashed passwords
   const managerPassword = await bcrypt.hash('manager123', 10);
-  const dispatcherPassword = await bcrypt.hash('dispatcher123', 10);
+  const driverPassword = await bcrypt.hash('driver123', 10);
   const safetyPassword = await bcrypt.hash('safety123', 10);
   const financePassword = await bcrypt.hash('finance123', 10);
 
@@ -29,14 +29,15 @@ async function main() {
     }
   });
 
-  const userDispatcher = await prisma.user.create({
+  const userDriver = await prisma.user.create({
     data: {
-      email: 'dispatcher@transitops.com',
-      password: dispatcherPassword,
-      name: 'Pam Beesly (Dispatcher)',
-      role: Role.DISPATCHER
+      email: 'driver@transitops.com',
+      password: driverPassword,
+      name: 'Pam Beesly (Driver)',
+      role: Role.DRIVER
     }
   });
+
 
   const userSafety = await prisma.user.create({
     data: {

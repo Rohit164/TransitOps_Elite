@@ -9,7 +9,7 @@ const router = Router();
 router.use(protect);
 
 router.route('/')
-  .get(restrictTo(Role.FLEET_MANAGER, Role.DISPATCHER, Role.FINANCIAL_ANALYST), getAllMaintenance)
+  .get(restrictTo(Role.FLEET_MANAGER, Role.DRIVER, Role.FINANCIAL_ANALYST), getAllMaintenance)
   .post(restrictTo(Role.FLEET_MANAGER), createMaintenance);
 
 router.post('/:id/complete', restrictTo(Role.FLEET_MANAGER), completeMaintenance);

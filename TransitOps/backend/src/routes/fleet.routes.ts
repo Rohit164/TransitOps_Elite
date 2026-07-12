@@ -10,11 +10,11 @@ const router = Router();
 router.use(protect);
 
 router.route('/')
-  .get(restrictTo(Role.FLEET_MANAGER, Role.DISPATCHER, Role.FINANCIAL_ANALYST), getAllVehicles)
+  .get(restrictTo(Role.FLEET_MANAGER, Role.DRIVER, Role.FINANCIAL_ANALYST), getAllVehicles)
   .post(restrictTo(Role.FLEET_MANAGER), createVehicle);
 
 router.route('/:id')
-  .get(restrictTo(Role.FLEET_MANAGER, Role.DISPATCHER, Role.FINANCIAL_ANALYST), getVehicle)
+  .get(restrictTo(Role.FLEET_MANAGER, Role.DRIVER, Role.FINANCIAL_ANALYST), getVehicle)
   .put(restrictTo(Role.FLEET_MANAGER), updateVehicle)
   .delete(restrictTo(Role.FLEET_MANAGER), deleteVehicle);
 

@@ -3,7 +3,7 @@
 
 const SEED_USERS = [
   { id: "u1", name: "Alice Fleet", email: "fleet_manager@transitops.com", role: "FLEET_MANAGER", password: "password123" },
-  { id: "u2", name: "Bob Dispatch", email: "dispatcher@transitops.com", role: "DISPATCHER", password: "password123" },
+  { id: "u2", name: "Bob Driver", email: "driver@transitops.com", role: "DRIVER", password: "password123" },
   { id: "u3", name: "Charlie Safety", email: "safety_officer@transitops.com", role: "SAFETY_OFFICER", password: "password123" },
   { id: "u4", name: "Diana Finance", email: "financial_analyst@transitops.com", role: "FINANCIAL_ANALYST", password: "password123" }
 ];
