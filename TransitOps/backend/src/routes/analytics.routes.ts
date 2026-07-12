@@ -8,8 +8,8 @@ const router = Router();
 
 router.use(protect);
 
-router.get('/kpis', restrictTo(Role.FLEET_MANAGER, Role.DISPATCHER, Role.SAFETY_OFFICER, Role.FINANCIAL_ANALYST), getDashboardKPIs);
-router.get('/reports', restrictTo(Role.FLEET_MANAGER, Role.DISPATCHER, Role.SAFETY_OFFICER, Role.FINANCIAL_ANALYST), getReports);
+router.get('/kpis', restrictTo(Role.FLEET_MANAGER, Role.DRIVER, Role.SAFETY_OFFICER, Role.FINANCIAL_ANALYST), getDashboardKPIs);
+router.get('/reports', restrictTo(Role.FLEET_MANAGER, Role.DRIVER, Role.SAFETY_OFFICER, Role.FINANCIAL_ANALYST), getReports);
 router.get('/export', restrictTo(Role.FLEET_MANAGER, Role.FINANCIAL_ANALYST), exportCSV);
 
 export default router;

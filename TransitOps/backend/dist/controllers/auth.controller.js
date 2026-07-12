@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMe = exports.logout = exports.login = void 0;
+exports.signup = exports.getMe = exports.logout = exports.login = void 0;
 const bcrypt = __importStar(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const database_js_1 = __importDefault(require("../config/database.js"));
@@ -111,3 +111,47 @@ const getMe = async (req, res, next) => {
     }
 };
 exports.getMe = getMe;
+const signup = async (req, res, next) => {
+    try {
+        const { name, email, password, role } = req.body;
+        if (!name || !email || !password || !role) {
+            return next(new errors_js_1.AppError('Please provide name, email, password, and role', 400));
+        }
+        // Check if user already exists
+        const existingUser = await database_js_1.default.user.findUnique({
+            where: { email }
+        });
+        if (existingUser) {
+            return next(new errors_js_1.AppError('Email address already registered', 400));
+        }
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        // Create user
+        const user = await database_js_1.default.user.create({
+            data: {
+                name,
+                email,
+                password: hashedPassword,
+                role
+            }
+        });
+        // Auto login: sign token
+        const token = jsonwebtoken_1.default.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        res.status(201).json({
+            status: 'success',
+            token,
+            data: {
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    name: user.name,
+                    role: user.role
+                }
+            }
+        });
+    }
+    catch (err) {
+        next(err);
+    }
+};
+exports.signup = signup;

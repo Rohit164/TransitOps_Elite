@@ -9,10 +9,10 @@ const router = (0, express_1.Router)();
 // All fleet routes are protected by JWT
 router.use(auth_middleware_js_1.protect);
 router.route('/')
-    .get((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DISPATCHER, client_1.Role.FINANCIAL_ANALYST), fleet_controller_js_1.getAllVehicles)
+    .get((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DRIVER, client_1.Role.FINANCIAL_ANALYST), fleet_controller_js_1.getAllVehicles)
     .post((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER), fleet_controller_js_1.createVehicle);
 router.route('/:id')
-    .get((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DISPATCHER, client_1.Role.FINANCIAL_ANALYST), fleet_controller_js_1.getVehicle)
+    .get((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DRIVER, client_1.Role.FINANCIAL_ANALYST), fleet_controller_js_1.getVehicle)
     .put((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER), fleet_controller_js_1.updateVehicle)
     .delete((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER), fleet_controller_js_1.deleteVehicle);
 exports.default = router;

@@ -85,3 +85,58 @@ export const getMe = async (req: AuthenticatedRequest, res: Response, next: Next
     next(err);
   }
 };
+
+export const signup = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const { name, email, password, role } = req.body;
+
+    if (!name || !email || !password || !role) {
+      return next(new AppError('Please provide name, email, password, and role', 400));
+    }
+
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (existingUser) {
+      return next(new AppError('Email address already registered', 400));
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role
+      }
+    });
+
+    // Auto login: sign token
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    res.status(201).json({
+      status: 'success',
+      token,
+      data: {
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role
+        }
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+

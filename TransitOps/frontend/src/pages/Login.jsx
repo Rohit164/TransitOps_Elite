@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Truck, LogIn, AlertCircle } from "lucide-react";
+import { Truck, LogIn, AlertCircle, UserPlus } from "lucide-react";
 
 export default function Login() {
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("DRIVER"); // Default role
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   
-  const { login } = useAuth();
+  const { login, signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -17,16 +20,21 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await login(email, password);
+      if (isSignUp) {
+        await signup(name, email, password, role);
+      } else {
+        await login(email, password);
+      }
       navigate("/dashboard");
     } catch (err) {
-      setError(err.message || "Invalid credentials. Please try again.");
+      setError(err.message || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const fillCredentials = (roleEmail) => {
+    setIsSignUp(false);
     setEmail(roleEmail);
     setPassword("password123");
   };
@@ -47,11 +55,13 @@ export default function Login() {
           <p className="text-slate-400 text-sm mt-1">Enterprise Fleet & Dispatch ERP</p>
         </div>
 
-        {/* Login Glass Card */}
+        {/* Auth Glass Card */}
         <div className="glass-panel p-8 rounded-2xl shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-brand-primary to-brand-secondary"></div>
           
-          <h2 className="text-2xl font-bold text-white mb-6">Sign In</h2>
+          <h2 className="text-2xl font-bold text-white mb-6">
+            {isSignUp ? "Create Account" : "Sign In"}
+          </h2>
           
           {error && (
             <div className="flex items-center gap-3 p-3.5 mb-5 rounded-lg bg-red-500/10 border border-red-500/20 text-brand-danger text-sm">
@@ -61,6 +71,23 @@ export default function Login() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {isSignUp && (
+              <div>
+                <label className="block text-slate-300 text-sm font-semibold mb-2" htmlFor="name">
+                  Full Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full form-input-custom px-4 py-3 rounded-lg text-white text-sm"
+                  placeholder="John Doe"
+                />
+              </div>
+            )}
+
             <div>
               <label className="block text-slate-300 text-sm font-semibold mb-2" htmlFor="email">
                 Email Address
@@ -91,6 +118,25 @@ export default function Login() {
               />
             </div>
 
+            {isSignUp && (
+              <div>
+                <label className="block text-slate-300 text-sm font-semibold mb-2" htmlFor="role">
+                  Assign User Role
+                </label>
+                <select
+                  id="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="w-full form-input-custom px-4 py-3 rounded-lg text-slate-300 text-sm bg-dark-bg"
+                >
+                  <option value="FLEET_MANAGER">Fleet Manager</option>
+                  <option value="DRIVER">Driver</option>
+                  <option value="SAFETY_OFFICER">Safety Officer</option>
+                  <option value="FINANCIAL_ANALYST">Financial Analyst</option>
+                </select>
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
@@ -100,45 +146,62 @@ export default function Login() {
                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
               ) : (
                 <>
-                  <LogIn size={18} />
-                  <span>Authenticate Session</span>
+                  {isSignUp ? <UserPlus size={18} /> : <LogIn size={18} />}
+                  <span>{isSignUp ? "Register & Sign In" : "Authenticate Session"}</span>
                 </>
               )}
             </button>
           </form>
 
-          {/* Quick-fill Helper Roles for testing */}
-          <div className="mt-8 border-t border-dark-border pt-6">
-            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">
-              Developer Quick-Fill Roles
-            </p>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <button
-                onClick={() => fillCredentials("fleet_manager@transitops.com")}
-                className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
-              >
-                💼 Fleet Manager
-              </button>
-              <button
-                onClick={() => fillCredentials("dispatcher@transitops.com")}
-                className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
-              >
-                📡 Dispatcher
-              </button>
-              <button
-                onClick={() => fillCredentials("safety_officer@transitops.com")}
-                className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
-              >
-                🛡️ Safety Officer
-              </button>
-              <button
-                onClick={() => fillCredentials("financial_analyst@transitops.com")}
-                className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
-              >
-                📊 Financial Analyst
-              </button>
-            </div>
+          {/* Toggle Sign Up / Sign In */}
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => {
+                setIsSignUp(!isSignUp);
+                setError("");
+              }}
+              className="text-brand-primary text-sm font-semibold hover:underline cursor-pointer"
+            >
+              {isSignUp
+                ? "Already have an account? Sign In"
+                : "New to TransitOps? Create an Account"}
+            </button>
           </div>
+
+          {/* Quick-fill Helper Roles for testing */}
+          {!isSignUp && (
+            <div className="mt-8 border-t border-dark-border pt-6">
+              <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">
+                Developer Quick-Fill Roles
+              </p>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <button
+                  onClick={() => fillCredentials("fleet_manager@transitops.com")}
+                  className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
+                >
+                  💼 Fleet Manager
+                </button>
+                <button
+                  onClick={() => fillCredentials("driver@transitops.com")}
+                  className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
+                >
+                  📡 Driver
+                </button>
+                <button
+                  onClick={() => fillCredentials("safety_officer@transitops.com")}
+                  className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
+                >
+                  🛡️ Safety Officer
+                </button>
+                <button
+                  onClick={() => fillCredentials("financial_analyst@transitops.com")}
+                  className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
+                >
+                  📊 Financial Analyst
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

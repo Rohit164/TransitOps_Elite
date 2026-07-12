@@ -9,10 +9,10 @@ const router = (0, express_1.Router)();
 // Protect all driver routes
 router.use(auth_middleware_js_1.protect);
 router.route('/')
-    .get((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DISPATCHER, client_1.Role.SAFETY_OFFICER), driver_controller_js_1.getAllDrivers)
+    .get((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DRIVER, client_1.Role.SAFETY_OFFICER), driver_controller_js_1.getAllDrivers)
     .post((0, rbac_middleware_js_1.restrictTo)(client_1.Role.SAFETY_OFFICER), driver_controller_js_1.createDriver);
 router.route('/:id')
-    .get((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DISPATCHER, client_1.Role.SAFETY_OFFICER), driver_controller_js_1.getDriver)
+    .get((0, rbac_middleware_js_1.restrictTo)(client_1.Role.FLEET_MANAGER, client_1.Role.DRIVER, client_1.Role.SAFETY_OFFICER), driver_controller_js_1.getDriver)
     .put((0, rbac_middleware_js_1.restrictTo)(client_1.Role.SAFETY_OFFICER), driver_controller_js_1.updateDriver)
     .delete((0, rbac_middleware_js_1.restrictTo)(client_1.Role.SAFETY_OFFICER), driver_controller_js_1.deleteDriver);
 exports.default = router;

@@ -3,7 +3,7 @@
 
 const SEED_USERS = [
   { id: "u1", name: "Alice Fleet", email: "fleet_manager@transitops.com", role: "FLEET_MANAGER", password: "password123" },
-  { id: "u2", name: "Bob Dispatch", email: "dispatcher@transitops.com", role: "DISPATCHER", password: "password123" },
+  { id: "u2", name: "Bob Driver", email: "driver@transitops.com", role: "DRIVER", password: "password123" },
   { id: "u3", name: "Charlie Safety", email: "safety_officer@transitops.com", role: "SAFETY_OFFICER", password: "password123" },
   { id: "u4", name: "Diana Finance", email: "financial_analyst@transitops.com", role: "FINANCIAL_ANALYST", password: "password123" }
 ];
@@ -65,6 +65,29 @@ export const mockDb = {
       token: `mock-jwt-token-for-${user.id}-${user.role}`,
       data: {
         user: { id: user.id, email: user.email, name: user.name, role: user.role }
+      }
+    };
+  },
+
+  signup: (name, email, password, role) => {
+    const users = getStorageItem("users", SEED_USERS);
+    const exists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
+    if (exists) {
+      throw new Error("Email address already registered");
+    }
+    const newUser = {
+      id: "u_" + Date.now(),
+      name,
+      email,
+      role,
+      password
+    };
+    users.push(newUser);
+    setStorageItem("users", users);
+    return {
+      token: `mock-jwt-token-for-${newUser.id}-${newUser.role}`,
+      data: {
+        user: { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role }
       }
     };
   },

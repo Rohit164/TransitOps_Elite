@@ -9,13 +9,13 @@ const router = Router();
 router.use(protect);
 
 router.route('/')
-  .get(restrictTo(Role.FLEET_MANAGER, Role.DISPATCHER, Role.SAFETY_OFFICER), getAllTrips)
-  .post(restrictTo(Role.DISPATCHER), createTrip);
+  .get(restrictTo(Role.FLEET_MANAGER, Role.DRIVER, Role.SAFETY_OFFICER), getAllTrips)
+  .post(restrictTo(Role.DRIVER), createTrip);
 
 router.route('/:id')
-  .get(restrictTo(Role.FLEET_MANAGER, Role.DISPATCHER, Role.SAFETY_OFFICER), getTrip);
+  .get(restrictTo(Role.FLEET_MANAGER, Role.DRIVER, Role.SAFETY_OFFICER), getTrip);
 
-router.post('/:id/dispatch', restrictTo(Role.DISPATCHER), dispatchTrip);
-router.post('/:id/complete', restrictTo(Role.DISPATCHER), completeTrip);
+router.post('/:id/dispatch', restrictTo(Role.DRIVER), dispatchTrip);
+router.post('/:id/complete', restrictTo(Role.DRIVER), completeTrip);
 
 export default router;
