@@ -130,7 +130,7 @@ export default function Login() {
                   className="w-full form-input-custom px-4 py-3 rounded-lg text-slate-300 text-sm bg-dark-bg"
                 >
                   <option value="FLEET_MANAGER">Fleet Manager</option>
-                  <option value="DRIVER">Driver</option>
+                  <option value="DISPATCHER">Dispatcher</option>
                   <option value="SAFETY_OFFICER">Safety Officer</option>
                   <option value="FINANCIAL_ANALYST">Financial Analyst</option>
                 </select>

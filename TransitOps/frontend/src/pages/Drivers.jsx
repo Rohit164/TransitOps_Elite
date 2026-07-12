@@ -275,6 +275,12 @@ export default function Drivers() {
             })}
           </div>
         )}
+
+        {/* Global Policy Warning Box matching mockup */}
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 text-brand-danger text-xs font-semibold shadow-inner">
+          <AlertTriangle size={16} className="shrink-0 animate-pulse" />
+          <span>Driving privilege is suspended if driving license has expired. Drivers with expired licenses cannot be assigned to trips.</span>
+        </div>
       </div>
 
       {/* Add/Edit Modal */}

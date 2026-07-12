@@ -160,7 +160,7 @@ export default function Settings() {
                             className="px-3 py-1.5 text-xs rounded-lg form-input-custom text-white bg-dark-bg cursor-pointer"
                           >
                             <option value="FLEET_MANAGER">Fleet Manager</option>
-                            <option value="DRIVER">Driver</option>
+                            <option value="DISPATCHER">Dispatcher</option>
                             <option value="SAFETY_OFFICER">Safety Officer</option>
                             <option value="FINANCIAL_ANALYST">Financial Analyst</option>
                           </select>
@@ -238,7 +238,7 @@ export default function Settings() {
                   className="w-full form-input-custom px-3 py-2.5 text-sm rounded-lg text-white bg-dark-bg cursor-pointer"
                 >
                   <option value="FLEET_MANAGER">Fleet Manager</option>
-                  <option value="DRIVER">Driver</option>
+                  <option value="DISPATCHER">Dispatcher</option>
                   <option value="SAFETY_OFFICER">Safety Officer</option>
                   <option value="FINANCIAL_ANALYST">Financial Analyst</option>
                 </select>
