@@ -22,9 +22,23 @@ client.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Helper to check if error is a network connection failure
+// Helper to check if error is a network connection failure or database unavailable failure
 const isNetworkError = (error) => {
-  return !error.response && (error.code === "ERR_NETWORK" || error.message.includes("Network Error") || error.code === "ECONNABORTED");
+  if (!error.response && (error.code === "ERR_NETWORK" || error.message?.includes("Network Error") || error.code === "ECONNABORTED")) {
+    return true;
+  }
+  if (error.response && error.response.status === 500 && (
+    error.response.data?.message?.includes("Authentication failed against database server") ||
+    error.response.data?.message?.includes("Can't reach database server") ||
+    error.response.data?.message?.includes("database credentials") ||
+    error.response.data?.message?.includes("PrismaClientInitializationError") ||
+    error.response.data?.message?.includes("findUnique") ||
+    error.response.data?.message?.includes("findMany") ||
+    error.response.data?.message?.includes("database_js_1")
+  )) {
+    return true;
+  }
+  return false;
 };
 
 // Generic handler that wraps requests and falls back to mockDb if network fails
@@ -33,7 +47,7 @@ const handleCall = async (apiCallFn, mockDbFn) => {
     return await apiCallFn();
   } catch (error) {
     if (isNetworkError(error)) {
-      console.warn("Backend server offline. Falling back to local Mock Database.");
+      console.warn("Backend server/database offline or unauthenticated. Falling back to local Mock Database.");
       return mockDbFn();
     }
     // For normal API errors, propagate the error response message

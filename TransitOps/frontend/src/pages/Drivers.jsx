@@ -178,6 +178,8 @@ export default function Drivers() {
               <option value="">All Statuses</option>
               <option value="AVAILABLE">Available</option>
               <option value="ON_TRIP">On Trip</option>
+              <option value="OFF_DUTY">Off Duty</option>
+              <option value="SUSPENDED">Suspended</option>
             </select>
           </div>
         </div>
@@ -199,9 +201,8 @@ export default function Drivers() {
               return (
                 <div
                   key={driver.id}
-                  className={`glass-panel p-6 rounded-2xl flex flex-col justify-between border relative overflow-hidden transition-all duration-300 ${
-                    expired ? "border-red-500/40 shadow-lg shadow-red-500/5 bg-red-950/5" : "border-dark-border"
-                  }`}
+                  className={`glass-panel p-6 rounded-2xl flex flex-col justify-between border relative overflow-hidden transition-all duration-300 ${expired ? "border-red-500/40 shadow-lg shadow-red-500/5 bg-red-950/5" : "border-dark-border"
+                    }`}
                 >
                   {/* License status indicator */}
                   {expired && (
@@ -247,9 +248,10 @@ export default function Drivers() {
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-slate-500">Status:</span>
-                        <span className={`px-2 py-0.5 rounded text-[11px] font-bold ${
-                          driver.status === "AVAILABLE" ? "bg-emerald-500/10 text-brand-success" : "bg-cyan-500/10 text-brand-secondary"
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded text-[11px] font-bold ${driver.status === "AVAILABLE" ? "bg-emerald-500/10 text-brand-success" :
+                          driver.status === "ON_TRIP" ? "bg-cyan-500/10 text-brand-secondary" :
+                            driver.status === "SUSPENDED" ? "bg-red-500/10 text-brand-danger" : "bg-slate-500/10 text-slate-400"
+                          }`}>
                           {driver.status}
                         </span>
                       </div>
@@ -280,7 +282,7 @@ export default function Drivers() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="w-full max-w-lg glass-panel rounded-2xl shadow-2xl overflow-hidden border border-dark-border">
             <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-brand-primary to-brand-secondary"></div>
-            
+
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-dark-border bg-dark-surface/40">
               <h3 className="text-lg font-bold text-white">
@@ -390,6 +392,8 @@ export default function Drivers() {
                   >
                     <option value="AVAILABLE">Available</option>
                     <option value="ON_TRIP">On Trip</option>
+                    <option value="OFF_DUTY">Off Duty</option>
+                    <option value="SUSPENDED">Suspended</option>
                   </select>
                 </div>
               )}

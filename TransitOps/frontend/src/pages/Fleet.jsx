@@ -123,6 +123,8 @@ export default function Fleet() {
         return <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-cyan-500/10 text-brand-secondary border border-cyan-500/20">On Trip</span>;
       case "IN_SHOP":
         return <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-red-500/10 text-brand-danger border border-red-500/20">In Shop</span>;
+      case "RETIRED":
+        return <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">Retired</span>;
       default:
         return <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-slate-500/10 text-slate-400 border border-slate-500/20">{status}</span>;
     }
@@ -191,6 +193,7 @@ export default function Fleet() {
               <option value="AVAILABLE">Available</option>
               <option value="ON_TRIP">On Trip</option>
               <option value="IN_SHOP">In Shop</option>
+              <option value="RETIRED">Retired</option>
             </select>
           </div>
         </div>
@@ -391,6 +394,7 @@ export default function Fleet() {
                     <option value="AVAILABLE">Available</option>
                     <option value="ON_TRIP">On Trip</option>
                     <option value="IN_SHOP">In Shop</option>
+                    <option value="RETIRED">Retired</option>
                   </select>
                 </div>
               )}
