@@ -36,7 +36,17 @@ export default function Login() {
   const fillCredentials = (roleEmail) => {
     setIsSignUp(false);
     setEmail(roleEmail);
-    setPassword("password123");
+    if (roleEmail === "rohit@gmail.com") {
+      setPassword("manager123");
+    } else if (roleEmail === "harsh@gmail.com") {
+      setPassword("driver123");
+    } else if (roleEmail === "varun@gmail.com") {
+      setPassword("safety123");
+    } else if (roleEmail === "nishant@gmail.com") {
+      setPassword("finance123");
+    } else {
+      setPassword("password123");
+    }
   };
 
   return (
@@ -176,25 +186,25 @@ export default function Login() {
               </p>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <button
-                  onClick={() => fillCredentials("manager@transitops.com")}
+                  onClick={() => fillCredentials("rohit@gmail.com")}
                   className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
                 >
                   💼 Fleet Manager
                 </button>
                 <button
-                  onClick={() => fillCredentials("driver@transitops.com")}
+                  onClick={() => fillCredentials("harsh@gmail.com")}
                   className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
                 >
                   📡 Driver
                 </button>
                 <button
-                  onClick={() => fillCredentials("safety@transitops.com")}
+                  onClick={() => fillCredentials("varun@gmail.com")}
                   className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
                 >
                   🛡️ Safety Officer
                 </button>
                 <button
-                  onClick={() => fillCredentials("finance@transitops.com")}
+                  onClick={() => fillCredentials("nishant@gmail.com")}
                   className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
                 >
                   📊 Financial Analyst

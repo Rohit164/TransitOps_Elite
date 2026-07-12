@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await api.login(email, password);
       const { token, data } = response;
-      
+
       localStorage.setItem("transitops_token", token);
       localStorage.setItem("transitops_user", JSON.stringify(data.user));
       setUser(data.user);
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await api.signup(name, email, password, role);
       const { token, data } = response;
-      
+
       localStorage.setItem("transitops_token", token);
       localStorage.setItem("transitops_user", JSON.stringify(data.user));
       setUser(data.user);

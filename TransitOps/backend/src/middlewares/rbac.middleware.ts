@@ -13,7 +13,10 @@ export const restrictTo = (...allowedRoles: Role[]) => {
       return next(new AppError('You must be logged in to access this resource.', 401));
     }
 
-    if (!allowedRoles.includes(req.user.role)) {
+    const userRoleStr = String(req.user.role).trim().toUpperCase();
+    const allowedRolesStr = allowedRoles.map(r => String(r).trim().toUpperCase());
+
+    if (!allowedRolesStr.includes(userRoleStr)) {
       return next(new AppError('Access denied: You do not have permissions for this action.', 403));
     }
 
