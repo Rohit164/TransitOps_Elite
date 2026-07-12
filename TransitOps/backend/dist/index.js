@@ -21,8 +21,12 @@ const settings_routes_js_1 = __importDefault(require("./routes/settings.routes.j
 const errors_js_1 = require("./utils/errors.js");
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
-// Enable CORS
-app.use((0, cors_1.default)());
+// Enable CORS - allow all origins so frontend (file:// or any dev port) can connect
+app.use((0, cors_1.default)({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 // Parse incoming JSON requests
 app.use(express_1.default.json());
 // API Base Health check

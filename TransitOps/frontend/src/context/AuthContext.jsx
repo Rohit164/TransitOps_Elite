@@ -40,6 +40,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const signup = async (name, email, password, role) => {
+    setLoading(true);
+    try {
+      const response = await api.signup(name, email, password, role);
+      const { token, data } = response;
+      
+      localStorage.setItem("transitops_token", token);
+      localStorage.setItem("transitops_user", JSON.stringify(data.user));
+      setUser(data.user);
+      return data.user;
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("transitops_token");
     localStorage.removeItem("transitops_user");
@@ -56,6 +73,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     login,
+    signup,
     logout,
     hasRole,
     isAuthenticated: !!user

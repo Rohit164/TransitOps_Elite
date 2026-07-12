@@ -1,11 +1,13 @@
 import axios from "axios";
 import { mockDb } from "./mockDb";
 
-const API_BASE_URL = "http://localhost:3000";
+// Empty string = use the Vite dev server's own origin.
+// Vite proxy (vite.config.js) forwards all /api/* calls to http://localhost:3000
+const API_BASE_URL = "";
 
 const client = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 5000,
+  timeout: 10000, // Handle slower local database responses
 });
 
 // Request interceptor to attach JWT token
@@ -28,14 +30,13 @@ const isNetworkError = (error) => {
 // Generic handler that wraps requests and falls back to mockDb if network fails
 const handleCall = async (apiCallFn, mockDbFn) => {
   try {
-    const response = await apiCallFn();
-    return response.data;
+    return await apiCallFn();
   } catch (error) {
     if (isNetworkError(error)) {
       console.warn("Backend server offline. Falling back to local Mock Database.");
       return mockDbFn();
     }
-    // For normal API errors (400, 401, 403, 404, 500), propagate the error response
+    // For normal API errors, propagate the error response message
     if (error.response && error.response.data) {
       throw new Error(error.response.data.message || error.response.data.error || "API Error");
     }
@@ -47,8 +48,21 @@ export const api = {
   // Auth
   login: async (email, password) => {
     return handleCall(
-      () => client.post("/api/auth/login", { email, password }),
+      async () => {
+        const res = await client.post("/api/auth/login", { email, password });
+        return res.data; // Returns { token, data: { user } }
+      },
       () => mockDb.login(email, password)
+    );
+  },
+
+  signup: async (name, email, password, role) => {
+    return handleCall(
+      async () => {
+        const res = await client.post("/api/auth/signup", { name, email, password, role });
+        return res.data; // Returns { token, data: { user } }
+      },
+      () => mockDb.signup(name, email, password, role)
     );
   },
 
@@ -58,28 +72,40 @@ export const api = {
     if (status) params.status = status;
     if (search) params.search = search;
     return handleCall(
-      () => client.get("/api/fleet", { params }),
+      async () => {
+        const res = await client.get("/api/fleet", { params });
+        return res.data.data.vehicles; // Return direct array
+      },
       () => mockDb.getVehicles(status, search)
     );
   },
 
   createVehicle: async (vehicleData) => {
     return handleCall(
-      () => client.post("/api/fleet", vehicleData),
+      async () => {
+        const res = await client.post("/api/fleet", vehicleData);
+        return res.data.data.vehicle; // Return direct object
+      },
       () => mockDb.createVehicle(vehicleData)
     );
   },
 
   updateVehicle: async (id, vehicleData) => {
     return handleCall(
-      () => client.put(`/api/fleet/${id}`, vehicleData),
+      async () => {
+        const res = await client.put(`/api/fleet/${id}`, vehicleData);
+        return res.data.data.vehicle; // Return direct object
+      },
       () => mockDb.updateVehicle(id, vehicleData)
     );
   },
 
   deleteVehicle: async (id) => {
     return handleCall(
-      () => client.delete(`/api/fleet/${id}`),
+      async () => {
+        const res = await client.delete(`/api/fleet/${id}`);
+        return res.data.data;
+      },
       () => mockDb.deleteVehicle(id)
     );
   },
@@ -90,21 +116,30 @@ export const api = {
     if (status) params.status = status;
     if (search) params.search = search;
     return handleCall(
-      () => client.get("/api/drivers", { params }),
+      async () => {
+        const res = await client.get("/api/drivers", { params });
+        return res.data.data.drivers; // Return direct array
+      },
       () => mockDb.getDrivers(status, search)
     );
   },
 
   createDriver: async (driverData) => {
     return handleCall(
-      () => client.post("/api/drivers", driverData),
+      async () => {
+        const res = await client.post("/api/drivers", driverData);
+        return res.data.data.driver; // Return direct object
+      },
       () => mockDb.createDriver(driverData)
     );
   },
 
   updateDriver: async (id, driverData) => {
     return handleCall(
-      () => client.put(`/api/drivers/${id}`, driverData),
+      async () => {
+        const res = await client.put(`/api/drivers/${id}`, driverData);
+        return res.data.data.driver; // Return direct object
+      },
       () => mockDb.updateDriver(id, driverData)
     );
   },
@@ -112,28 +147,40 @@ export const api = {
   // Trips
   getTrips: async () => {
     return handleCall(
-      () => client.get("/api/trips"),
+      async () => {
+        const res = await client.get("/api/trips");
+        return res.data.data.trips; // Return direct array
+      },
       () => mockDb.getTrips()
     );
   },
 
   createTrip: async (tripData) => {
     return handleCall(
-      () => client.post("/api/trips", tripData),
+      async () => {
+        const res = await client.post("/api/trips", tripData);
+        return res.data.data.trip; // Return direct object
+      },
       () => mockDb.createTrip(tripData)
     );
   },
 
   dispatchTrip: async (id) => {
     return handleCall(
-      () => client.post(`/api/trips/${id}/dispatch`),
+      async () => {
+        const res = await client.post(`/api/trips/${id}/dispatch`);
+        return res.data.data.trip; // Return direct object
+      },
       () => mockDb.dispatchTrip(id)
     );
   },
 
   completeTrip: async (id, completeData) => {
     return handleCall(
-      () => client.post(`/api/trips/${id}/complete`, completeData),
+      async () => {
+        const res = await client.post(`/api/trips/${id}/complete`, completeData);
+        return res.data.data.trip; // Return direct object
+      },
       () => mockDb.completeTrip(id, completeData)
     );
   },
@@ -141,21 +188,30 @@ export const api = {
   // Maintenance
   getMaintenance: async () => {
     return handleCall(
-      () => client.get("/api/maintenance"),
+      async () => {
+        const res = await client.get("/api/maintenance");
+        return res.data.data.records; // Return direct array
+      },
       () => mockDb.getMaintenance()
     );
   },
 
   createMaintenance: async (maintData) => {
     return handleCall(
-      () => client.post("/api/maintenance", maintData),
+      async () => {
+        const res = await client.post("/api/maintenance", maintData);
+        return res.data.data.record; // Return direct object
+      },
       () => mockDb.createMaintenance(maintData)
     );
   },
 
   completeMaintenance: async (id, completeData) => {
     return handleCall(
-      () => client.post(`/api/maintenance/${id}/complete`, completeData),
+      async () => {
+        const res = await client.post(`/api/maintenance/${id}/complete`, completeData);
+        return res.data.data.record; // Return direct object
+      },
       () => mockDb.completeMaintenance(id, completeData)
     );
   },
@@ -163,21 +219,30 @@ export const api = {
   // Expenses
   getExpenses: async () => {
     return handleCall(
-      () => client.get("/api/expenses"),
+      async () => {
+        const res = await client.get("/api/expenses");
+        return res.data.data.expenses; // Return direct array
+      },
       () => mockDb.getExpenses()
     );
   },
 
   getExpenseStats: async () => {
     return handleCall(
-      () => client.get("/api/expenses/stats"),
+      async () => {
+        const res = await client.get("/api/expenses/stats");
+        return res.data.data; // Return stats block
+      },
       () => mockDb.getExpenseStats()
     );
   },
 
   createExpense: async (expenseData) => {
     return handleCall(
-      () => client.post("/api/expenses", expenseData),
+      async () => {
+        const res = await client.post("/api/expenses", expenseData);
+        return res.data.data.expense; // Return direct object
+      },
       () => mockDb.createExpense(expenseData)
     );
   },
@@ -185,21 +250,26 @@ export const api = {
   // Analytics
   getKpis: async () => {
     return handleCall(
-      () => client.get("/api/analytics/kpis"),
+      async () => {
+        const res = await client.get("/api/analytics/kpis");
+        return res.data.data; // Return direct object
+      },
       () => mockDb.getKpis()
     );
   },
 
   getReports: async () => {
     return handleCall(
-      () => client.get("/api/analytics/reports"),
+      async () => {
+        const res = await client.get("/api/analytics/reports");
+        return res.data.data; // Return direct object
+      },
       () => mockDb.getReports()
     );
   },
 
   exportData: async (type) => {
     try {
-      // Try hitting the actual backend
       const response = await client.get(`/api/analytics/export`, {
         params: { type },
         responseType: "blob"
@@ -260,27 +330,35 @@ export const api = {
   // Settings
   getUsers: async () => {
     return handleCall(
-      () => client.get("/api/settings/users"),
+      async () => {
+        const res = await client.get("/api/settings/users");
+        return res.data.data.users; // Return direct array
+      },
       () => mockDb.getUsers()
     );
   },
 
   createUser: async (userData) => {
     return handleCall(
-      () => client.post("/api/settings/users", userData),
+      async () => {
+        const res = await client.post("/api/settings/users", userData);
+        return res.data.data.user; // Return direct object
+      },
       () => mockDb.createUser(userData)
     );
   },
 
   updateUserRole: async (id, role) => {
     return handleCall(
-      () => client.patch(`/api/settings/users/${id}/role`, { role }),
+      async () => {
+        const res = await client.patch(`/api/settings/users/${id}/role`, { role });
+        return res.data.data.user; // Return direct object
+      },
       () => mockDb.updateUserRole(id, role)
     );
   },
 
   changePassword: async (currentPassword, newPassword) => {
-    // Determine user ID from token
     const token = localStorage.getItem("transitops_token");
     let userId = "u1"; // default fallback for mock
     if (token && token.startsWith("mock-jwt-token-for-")) {
@@ -289,7 +367,10 @@ export const api = {
     }
 
     return handleCall(
-      () => client.post("/api/settings/change-password", { currentPassword, newPassword }),
+      async () => {
+        const res = await client.post("/api/settings/change-password", { currentPassword, newPassword });
+        return res.data;
+      },
       () => mockDb.changePassword(userId, currentPassword, newPassword)
     );
   }

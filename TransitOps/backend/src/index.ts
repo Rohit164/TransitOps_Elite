@@ -21,8 +21,12 @@ import { errorHandler, AppError } from './utils/errors.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Enable CORS
-app.use(cors());
+// Enable CORS - allow all origins so frontend (file:// or any dev port) can connect
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Parse incoming JSON requests
 app.use(express.json());

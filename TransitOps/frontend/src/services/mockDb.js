@@ -69,6 +69,29 @@ export const mockDb = {
     };
   },
 
+  signup: (name, email, password, role) => {
+    const users = getStorageItem("users", SEED_USERS);
+    const exists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
+    if (exists) {
+      throw new Error("Email address already registered");
+    }
+    const newUser = {
+      id: "u_" + Date.now(),
+      name,
+      email,
+      role,
+      password
+    };
+    users.push(newUser);
+    setStorageItem("users", users);
+    return {
+      token: `mock-jwt-token-for-${newUser.id}-${newUser.role}`,
+      data: {
+        user: { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role }
+      }
+    };
+  },
+
   // --- VEHICLES (FLEET) ---
   getVehicles: (status, search) => {
     let list = getStorageItem("vehicles", SEED_VEHICLES);
