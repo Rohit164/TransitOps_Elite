@@ -176,7 +176,7 @@ export default function Login() {
               </p>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <button
-                  onClick={() => fillCredentials("fleet_manager@transitops.com")}
+                  onClick={() => fillCredentials("manager@transitops.com")}
                   className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
                 >
                   💼 Fleet Manager
@@ -188,13 +188,13 @@ export default function Login() {
                   📡 Driver
                 </button>
                 <button
-                  onClick={() => fillCredentials("safety_officer@transitops.com")}
+                  onClick={() => fillCredentials("safety@transitops.com")}
                   className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
                 >
                   🛡️ Safety Officer
                 </button>
                 <button
-                  onClick={() => fillCredentials("financial_analyst@transitops.com")}
+                  onClick={() => fillCredentials("finance@transitops.com")}
                   className="px-3 py-2 rounded bg-dark-surface hover:bg-dark-surface-hover text-left border border-dark-border text-slate-300 transition-colors cursor-pointer truncate"
                 >
                   📊 Financial Analyst
