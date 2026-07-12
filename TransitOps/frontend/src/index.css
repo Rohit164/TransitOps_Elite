@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  --color-dark-bg: #090b11;
+  --color-dark-surface: #131722;
+  --color-dark-surface-hover: #1b2030;
+  --color-dark-border: #222a3d;
+  --color-dark-border-highlight: #384666;
+  --color-brand-primary: #8b5cf6;
+  --color-brand-primary-light: #a78bfa;
+  --color-brand-secondary: #06b6d4;
+  --color-brand-success: #10b981;
+  --color-brand-warning: #f59e0b;
+  --color-brand-danger: #ef4444;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090b11;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222a3d;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #384666;
+}
+
+/* Global Reset & Base Styling */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #090b11;
+  color: #f3f4f6;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
+/* Glassmorphism utility card background */
+.glass-panel {
+  background: rgba(19, 23, 34, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 42, 61, 0.6);
+}
+
+.glass-panel-interactive {
+  background: rgba(19, 23, 34, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 42, 61, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-interactive:hover {
+  background: rgba(27, 32, 48, 0.85);
+  border-color: rgba(139, 92, 246, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px 0 rgba(139, 92, 246, 0.1);
+}
+
+/* Smooth custom inputs */
+.form-input-custom {
+  background: rgba(9, 11, 17, 0.6);
+  border: 1px solid #222a3d;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-input-custom:focus {
+  border-color: #8b5cf6;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
